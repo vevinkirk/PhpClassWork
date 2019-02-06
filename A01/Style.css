@@ -1,0 +1,54 @@
+/* 
+    Document   : style
+    Created on : Sep 23, 2010, 4:43:28 PM
+    Author     : csandvig
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+body {
+    background: white url("/sandvig/images/bluefade.gif") repeat-x;
+    font-family:  sans-serif;
+    font-size: large;
+    /* IE workaround for centering bodyContainer */
+    text-align: center;
+}
+
+.bodyContainer{
+    width: 50%;
+    margin: 0 auto;
+    border: 1px black solid;
+    text-align: center;
+    background: white;
+    padding: 20px;
+}
+
+.clockBorder {
+    border-width: 10px;
+    border-color: #CCCCCC;
+    border-style: ridge;
+    padding: 5px;
+    margin: 3px;
+    width: 220px;
+    margin: 0 auto;
+    background-color: black;
+
+}
+
+.clockFont {
+    font-size: 40px;
+    font-weight: 700;
+    color: #00FF00;
+    font-family: ocr a extended, Helvetica, sans-serif;
+
+
+}
