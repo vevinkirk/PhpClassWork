@@ -1,56 +1,93 @@
+<!-- template for mySql database access. -->
 <!DOCTYPE html>
 <html>
    <head>
-      <title>Movie Titles - Add, Delete</title>
+      <title>Movie Database</title>
       <link href="/sandvig/mis314/assignments/style.css" rel="stylesheet" type="text/css">
    </head>
-   <body>
-      <div class="pageContainer centerText">
-         <h3>Movie Titles</h3><hr>
+   <div class="pageContainer centerText">
+      <h3>Movie Database</h3>
+      <hr>
+      <form class="formLayout">
+          <div class="formGroup">
+            <label>ASIN:</label>
+            <input type="text" name="asin" required placeholder="ASIN" autofocus  pattern=".{10,}" title="10 or more numbers & characters"/>
+            
+         </div>
+         <div class="formGroup">
+            <label>Title:</label>
+            <input type="text" name="title" required placeholder="title" />
+         </div>
+          <div class="formGroup">
+            <label>Price:</label>
+            <input type="text" name="price" required placeholder="price" pattern="[0-9\.]{1,7}" title="Must be numeric" />
+         </div>
+         <div class="formGroup">
+            <label> </label>
+            <button>Add to Database</button>
+         </div>
+      </form>
+      <?php
+      //include database connection
+      include("databaseconnection.php");
 
-         <form class="formLayout">
-            <div class="formGroup">
-               <label>ASIN:</label>
-               <input type="text" name="asin" required placeholder="ASIN" autofocus  pattern=".{10,}" title="10 or more numbers & characters"/>
-            </div>
-            <div class="formGroup">
-               <label>Title:</label>
-               <input type="text" name="title" required placeholder="title" />
-            </div>
-            <div class="formGroup">
-               <label>Price:</label>
-               <input type="text" name="price" required placeholder="price" pattern="[0-9\.]{1,7}" title="Must be numeric" />
-            </div>
-            <div class="formGroup">
-               <label></label>
-               <button type="submit">Add to database</button>
-            </div>
-         </form>
+      //connect to database
+      $link = fConnectToDatabase();
 
-         4 records in the database.</p>
-<table class='simpleTable shadow'>
-<tr><th>ASIN</th><th>Title</th><th>Price</th><th>Image</th><th>Delete</th>
-<tr><td>B00005BKZS</td>
-    <td>Black Robe</td>
-    <td>$10.99</td>
-    <td><img src='http://images.amazon.com/images/P/B00005BKZS.01.MZZZZZZZ.jpg'></td>
-    <td><a href='?deleteASIN=B00005BKZS'> delete</a></td></tr>
-<tr><td>B000065K8B</td>
-    <td>Sliding Doors</td>
-    <td>$9.98</td>
-    <td><img src='http://images.amazon.com/images/P/B000065K8B.01.MZZZZZZZ.jpg'></td>
-    <td><a href='?deleteASIN=B000065K8B'> delete</a></td></tr>
-<tr><td>B00080ZG1A</td>
-    <td>The Aviator</td>
-    <td>$12.99</td>
-    <td><img src='http://images.amazon.com/images/P/B00080ZG1A.01.MZZZZZZZ.jpg'></td>
-    <td><a href='?deleteASIN=B00080ZG1A'> delete</a></td></tr>
-<tr><td>B000BSM26Q</td>
-    <td>Wedding Crashers</td>
-    <td>$13.99</td>
-    <td><img src='http://images.amazon.com/images/P/B000BSM26Q.01.MZZZZZZZ.jpg'></td>
-    <td><a href='?deleteASIN=B000BSM26Q'> delete</a></td></tr>
-</table>
-      </div>
-   </body>
+      //Retrieve parameters from querystring and sanitize
+      $asin = fCleanString($link, $_GET['asin'], 15);
+      $title = fCleanString($link, $_GET['title'], 100);
+      $price = fCleanString($link, $_GET['price'], 5);
+      $deleteAsin = fCleanString($link,$_GET['deleteAsin'],15);
+
+      //Insert
+      if (!empty($asin)) {
+         $sql = "Insert into dvdtitles (asin,title, price)
+                VALUES ('$asin','$title',$price)";
+         mysqli_query($link, $sql) or die('Insert error: ' . mysqli_error($link));
+      }
+      //INSERT INTO `dvdtitles` (`asin`, `title`, `price`) VALUES ('4', 'testfour', '4');
+      //Delete
+      if (!empty($deleteAsin)) {
+         $sql = "Delete from dvdtitles WHERE dvdtitles . asin='$deleteAsin'";
+         mysqli_query($link, $sql) or die('Delete error: ' . mysqli_error($link));
+      }
+      //DELETE FROM `dvdtitles` WHERE `dvdtitles`.`asin` = '123123123123123' 
+      //List records
+      $sql = 'SELECT asin, title, price
+                FROM dvdtitles order by asin';
+
+      //$result is an array containing query results 
+      $result = mysqli_query($link, $sql)
+              or die('SQL syntax error: ' . mysqli_error($link));
+
+      echo "<p>" . mysqli_num_rows($result) . " records in query</p>";
+      ?>
+      <table class="simpleTable">
+         <tr>
+            <th>asin</th>
+            <th>title</th>
+            <th>price</th>
+            <th>image</th>
+            <th>Delete</th>
+         </tr>
+         <?php
+         // iterate through the retrieved records
+         while ($row = mysqli_fetch_array($result)) {
+            //Field names are case sensitive and must match
+            //the case used in sql statement
+            $asin = $row['asin'];
+            echo "<tr>
+                     <td>$asin</td>
+                     <td>$row[title]</td>
+                     <td>$$row[price]</td>
+                     <td><img src='http://images.amazon.com/images/P/$asin.01.MZZZZZZZ.jpg'></td>
+                     <td><a href='?deleteAsin=$asin'>delete</a></td>
+                 </tr>";
+            
+         }
+         ?> 
+      </table>
+   </div>
+</body>
 </html>
