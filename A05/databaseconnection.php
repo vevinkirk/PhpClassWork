@@ -27,7 +27,7 @@ function fConnectToDatabase() {
    //Create a connection object
    //@ suppresses errors.  
    //parameters: mysqli_connect('my_server', 'my_user', 'my_password', 'my_db');  
-   $link = @mysqli_connect('yorktown.cbe.wwu.edu', 'virkk2', 'Password123', 'virkk2');
+   $link = @mysqli_connect('server', 'username', password', 'db);
 
    //handle connection errors
    if (!$link) {
