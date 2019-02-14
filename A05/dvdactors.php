@@ -3,7 +3,7 @@
 <html>
    <head>
       <title>Movie Actors</title>
-      <link href="/sandvig/mis314/assignments/style.css" rel="stylesheet" type="text/css">
+      <link href="style.css" rel="stylesheet" type="text/css">
    </head>
    <div class="pageContainer centerText">
       <h3>Movie Actors</h3>

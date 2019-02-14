@@ -1,7 +1,7 @@
 <html>
    <head>
       <title>For Loop Table</title>
-      <link href="/sandvig/mis314/assignments/style.css" rel="stylesheet" type="text/css">
+      <link href="style.css" rel="stylesheet" type="text/css">
    </head>
    <body>
       <div class="pageContainer centerText">

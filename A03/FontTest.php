@@ -7,7 +7,7 @@ else
 <html>
    <head>
       <title>Funky Font Message</title>
-      <link href="/sandvig/mis314/assignments/style.css" rel="stylesheet" type="text/css">
+      <link href="style.css" rel="stylesheet" type="text/css">
    </head>
    <div class="pageContainer centerText">
       <h2>Funky Font Message</h2><hr>
